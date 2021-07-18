@@ -41,6 +41,9 @@ class CustomNavBar extends StatelessWidget {
         return _buildAddToCartNavBar(context, product);
       case '/cart':
         return _buildGoToCheckoutNavBar(context);
+      case '/checkout':
+        return _buildOrderNowNavBar(context);
+
       default:
         _buildNavBar(context);
     }
@@ -133,6 +136,22 @@ class CustomNavBar extends StatelessWidget {
         ),
         child: Text(
           'GO TO CHECKOUT',
+          style: Theme.of(context).textTheme.headline3,
+        ),
+      )
+    ];
+  }
+
+  List<Widget> _buildOrderNowNavBar(context) {
+    return [
+      ElevatedButton(
+        onPressed: () {},
+        style: ElevatedButton.styleFrom(
+          primary: Colors.white,
+          shape: RoundedRectangleBorder(),
+        ),
+        child: Text(
+          'ORDER NOW',
           style: Theme.of(context).textTheme.headline3,
         ),
       )

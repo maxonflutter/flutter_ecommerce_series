@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecommerce_app/blocs/category/category_bloc.dart';
 import 'package:flutter_ecommerce_app/blocs/product/product_bloc.dart';
 import 'package:flutter_ecommerce_app/models/models.dart';
+import 'package:flutter_ecommerce_app/repositories/category/category_repository.dart';
 import 'package:flutter_ecommerce_app/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
