@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ecommerce_app/blocs/cart/cart_bloc.dart';
-import 'package:flutter_ecommerce_app/blocs/checkout/checkout_bloc.dart';
-import 'package:flutter_ecommerce_app/blocs/wishlist/wishlist_bloc.dart';
-import 'package:flutter_ecommerce_app/models/models.dart';
+import '/blocs/blocs.dart';
+import '/models/models.dart';
 
 class CustomNavBar extends StatelessWidget {
   final String screen;
@@ -91,7 +89,7 @@ class CustomNavBar extends StatelessWidget {
                 final snackBar =
                     SnackBar(content: Text('Added to your Wishlist!'));
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                context.read<WishlistBloc>().add(WishlistProductAdded(product));
+                context.read<WishlistBloc>().add(AddProductToWishlist(product));
               },
             );
           }
@@ -106,7 +104,9 @@ class CustomNavBar extends StatelessWidget {
           if (state is CartLoaded) {
             return ElevatedButton(
               onPressed: () {
-                context.read<CartBloc>().add(CartProductAdded(product));
+                context.read<CartBloc>().add(
+                      AddProduct(product),
+                    );
                 Navigator.pushNamed(context, '/cart');
               },
               style: ElevatedButton.styleFrom(
