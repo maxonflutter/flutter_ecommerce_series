@@ -42,6 +42,8 @@ class CustomNavBar extends StatelessWidget {
         return _buildGoToCheckoutNavBar(context);
       case '/checkout':
         return _buildOrderNowNavBar(context);
+      case '/order-confirmation':
+        return _buildNavBar(context);
 
       default:
         _buildNavBar(context);
@@ -155,9 +157,10 @@ class CustomNavBar extends StatelessWidget {
           if (state is CheckoutLoaded) {
             return ElevatedButton(
               onPressed: () {
-                context
-                    .read<CheckoutBloc>()
-                    .add(ConfirmCheckout(checkout: state.checkout));
+                context.read<CheckoutBloc>().add(
+                      ConfirmCheckout(checkout: state.checkout),
+                    );
+                Navigator.pushNamed(context, '/order-confirmation');
               },
               style: ElevatedButton.styleFrom(
                 primary: Colors.white,
