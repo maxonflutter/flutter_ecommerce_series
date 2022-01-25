@@ -21,6 +21,7 @@ class CheckoutLoaded extends CheckoutState {
   final String? deliveryFee;
   final String? total;
   final Checkout checkout;
+  final PaymentMethod paymentMethod;
 
   CheckoutLoaded({
     this.fullName,
@@ -33,7 +34,7 @@ class CheckoutLoaded extends CheckoutState {
     this.subtotal,
     this.deliveryFee,
     this.total,
-  }) : checkout = Checkout(
+  })  : checkout = Checkout(
           fullName: fullName,
           email: email,
           address: address,
@@ -44,7 +45,8 @@ class CheckoutLoaded extends CheckoutState {
           subtotal: subtotal,
           deliveryFee: deliveryFee,
           total: total,
-        );
+        ),
+        paymentMethod = PaymentMethod.apple_pay;
 
   @override
   List<Object?> get props => [
@@ -58,5 +60,7 @@ class CheckoutLoaded extends CheckoutState {
         subtotal,
         deliveryFee,
         total,
+        checkout,
+        paymentMethod
       ];
 }

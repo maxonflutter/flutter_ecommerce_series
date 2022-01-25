@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_ecommerce_app/models/checkout_model.dart';
-import 'package:flutter_ecommerce_app/repositories/checkout/base_checkout_repository.dart';
+import '/models/checkout_model.dart';
+import '/repositories/checkout/base_checkout_repository.dart';
 
 class CheckoutRepository extends BaseCheckoutRepository {
   final FirebaseFirestore _firebaseFirestore;

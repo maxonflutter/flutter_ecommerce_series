@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_ecommerce_app/models/models.dart';
-import 'package:flutter_ecommerce_app/repositories/category/category_repository.dart';
+import '/models/models.dart';
+import '/repositories/category/category_repository.dart';
 
 part 'category_event.dart';
 part 'category_state.dart';

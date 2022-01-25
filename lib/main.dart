@@ -9,8 +9,6 @@ import '/repositories/repositories.dart';
 import '/screens/screens.dart';
 import '/simple_bloc_observer.dart';
 
-import 'repositories/product/product_repository.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -25,37 +23,49 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => CartBloc()..add(LoadCart()),
-        ),
-        BlocProvider(
-          create: (context) => CheckoutBloc(
-            cartBloc: context.read<CartBloc>(),
-            checkoutRepository: CheckoutRepository(),
+    return MaterialApp(
+      title: 'Zero To Unicorn',
+      debugShowCheckedModeBanner: false,
+      theme: theme(),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => CartBloc()..add(LoadCart()),
           ),
+          BlocProvider(
+            create: (_) => PaymentBloc()
+              ..add(
+                LoadPaymentMethod(),
+              ),
+          ),
+          BlocProvider(
+            create: (context) => CheckoutBloc(
+              cartBloc: context.read<CartBloc>(),
+              paymentBloc: context.read<PaymentBloc>(),
+              checkoutRepository: CheckoutRepository(),
+            ),
+          ),
+          BlocProvider(
+            create: (_) => WishlistBloc()..add(StartWishlist()),
+          ),
+          BlocProvider(
+            create: (_) => CategoryBloc(
+              categoryRepository: CategoryRepository(),
+            )..add(LoadCategories()),
+          ),
+          BlocProvider(
+            create: (_) => ProductBloc(
+              productRepository: ProductRepository(),
+            )..add(LoadProducts()),
+          ),
+        ],
+        child: MaterialApp(
+          title: 'Zero To Unicorn',
+          debugShowCheckedModeBanner: false,
+          theme: theme(),
+          onGenerateRoute: AppRouter.onGenerateRoute,
+          initialRoute: SplashScreen.routeName,
         ),
-        BlocProvider(
-          create: (_) => WishlistBloc()..add(StartWishlist()),
-        ),
-        BlocProvider(
-          create: (_) => CategoryBloc(
-            categoryRepository: CategoryRepository(),
-          )..add(LoadCategories()),
-        ),
-        BlocProvider(
-          create: (_) => ProductBloc(
-            productRepository: ProductRepository(),
-          )..add(LoadProducts()),
-        )
-      ],
-      child: MaterialApp(
-        title: 'Zero To Unicorn',
-        debugShowCheckedModeBanner: false,
-        theme: theme(),
-        onGenerateRoute: AppRouter.onGenerateRoute,
-        initialRoute: OrderConfirmation.routeName,
       ),
     );
   }

@@ -1,5 +1,5 @@
-name: flutter_ecommerce_app
-description: A new Flutter project.
+name: ecommerce
+description: A new Flutter eCommerce.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -31,10 +31,11 @@ dependencies:
   equatable: ^2.0.3
   carousel_slider: ^4.0.0-nullsafety.0
   flutter_bloc: ^8.0.1
-  firebase_core: ^1.2.1
-  cloud_firestore: ^2.2.1
+  firebase_core: ^1.11.0
+  cloud_firestore: ^3.1.6
   flutter_svg: ^1.0.0
-
+  pay: ^1.0.7 
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -54,6 +55,7 @@ flutter:
   assets:
     - assets/images/
     - assets/svgs/
+    - assets/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
