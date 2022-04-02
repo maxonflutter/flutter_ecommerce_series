@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_ecommerce_app/models/models.dart';
+import '/models/models.dart';
 
 class Checkout extends Equatable {
   final String? fullName;

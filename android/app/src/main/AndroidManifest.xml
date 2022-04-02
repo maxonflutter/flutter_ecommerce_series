@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.flutter_application_1">
+    package="com.maxonflutter.ecommerce">
    <application
-        android:label="flutter_application_1"
+        android:label="ecommerce"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -37,5 +37,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+          android:name="com.google.android.gms.wallet.api.enabled"
+          android:value="true" />
     </application>
 </manifest>

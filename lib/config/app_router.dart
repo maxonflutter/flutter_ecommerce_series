@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ecommerce_app/models/models.dart';
-import 'package:flutter_ecommerce_app/screens/screens.dart';
-
-import '../screens/screens.dart';
+import '/models/models.dart';
+import '/screens/screens.dart';
 
 class AppRouter {
   static Route onGenerateRoute(RouteSettings settings) {
@@ -24,6 +22,10 @@ class AppRouter {
         return WishlistScreen.route();
       case CheckoutScreen.routeName:
         return CheckoutScreen.route();
+      case OrderConfirmation.routeName:
+        return OrderConfirmation.route();
+      case PaymentSelection.routeName:
+        return PaymentSelection.route();
       default:
         return _errorRoute();
     }

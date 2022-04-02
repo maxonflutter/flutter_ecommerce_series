@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ecommerce_app/blocs/cart/cart_bloc.dart';
-import 'package:flutter_ecommerce_app/blocs/wishlist/wishlist_bloc.dart';
-import 'package:flutter_ecommerce_app/models/models.dart';
+import '/blocs/blocs.dart';
+import '/models/models.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -87,21 +86,35 @@ class ProductCard extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        IconButton(
-                          icon: Icon(
-                            Icons.add_circle,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            final snackBar = SnackBar(
-                              content: Text('Added to your Cart!'),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
+                        BlocBuilder<CartBloc, CartState>(
+                          builder: (context, state) {
+                            if (state is CartLoading) {
+                              return Center(
+                                child: CircularProgressIndicator(
+                                    color: Colors.white),
+                              );
+                            }
+                            if (state is CartLoaded) {
+                              return IconButton(
+                                icon: Icon(
+                                  Icons.add_circle,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  final snackBar = SnackBar(
+                                    content: Text('Added to your Cart!'),
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
 
-                            context.read<CartBloc>().add(
-                                  CartProductAdded(product),
-                                );
+                                  context.read<CartBloc>().add(
+                                        AddProduct(product),
+                                      );
+                                },
+                              );
+                            } else {
+                              return Text('Something went wrong.');
+                            }
                           },
                         ),
                         additionalButtons
@@ -120,7 +133,7 @@ class ProductCard extends StatelessWidget {
                                       .showSnackBar(snackBar);
                                   context
                                       .read<WishlistBloc>()
-                                      .add(WishlistProductRemoved(product));
+                                      .add(AddProductToWishlist(product));
                                 },
                               )
                             : SizedBox()

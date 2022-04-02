@@ -1,9 +1,11 @@
+import 'dart:io';
+
+import 'package:ecommerce/models/payment_method_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ecommerce_app/blocs/cart/cart_bloc.dart';
-import 'package:flutter_ecommerce_app/blocs/checkout/checkout_bloc.dart';
-import 'package:flutter_ecommerce_app/blocs/wishlist/wishlist_bloc.dart';
-import 'package:flutter_ecommerce_app/models/models.dart';
+import '/widgets/widgets.dart';
+import '/blocs/blocs.dart';
+import '/models/models.dart';
 
 class CustomNavBar extends StatelessWidget {
   final String screen;
@@ -38,12 +40,16 @@ class CustomNavBar extends StatelessWidget {
         return _buildNavBar(context);
       case '/wishlist':
         return _buildNavBar(context);
+      case '/payment-selection':
+        return _buildNavBar(context);
       case '/product':
         return _buildAddToCartNavBar(context, product);
       case '/cart':
         return _buildGoToCheckoutNavBar(context);
       case '/checkout':
         return _buildOrderNowNavBar(context);
+      case '/order-confirmation':
+        return _buildNavBar(context);
 
       default:
         _buildNavBar(context);
@@ -91,7 +97,7 @@ class CustomNavBar extends StatelessWidget {
                 final snackBar =
                     SnackBar(content: Text('Added to your Wishlist!'));
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                context.read<WishlistBloc>().add(WishlistProductAdded(product));
+                context.read<WishlistBloc>().add(AddProductToWishlist(product));
               },
             );
           }
@@ -106,7 +112,9 @@ class CustomNavBar extends StatelessWidget {
           if (state is CartLoaded) {
             return ElevatedButton(
               onPressed: () {
-                context.read<CartBloc>().add(CartProductAdded(product));
+                context.read<CartBloc>().add(
+                      AddProduct(product),
+                    );
                 Navigator.pushNamed(context, '/cart');
               },
               style: ElevatedButton.styleFrom(
@@ -153,21 +161,56 @@ class CustomNavBar extends StatelessWidget {
             );
           }
           if (state is CheckoutLoaded) {
-            return ElevatedButton(
-              onPressed: () {
-                context
-                    .read<CheckoutBloc>()
-                    .add(ConfirmCheckout(checkout: state.checkout));
-              },
-              style: ElevatedButton.styleFrom(
-                primary: Colors.white,
-                shape: RoundedRectangleBorder(),
-              ),
-              child: Text(
-                'ORDER NOW',
-                style: Theme.of(context).textTheme.headline3,
-              ),
-            );
+            if (Platform.isAndroid) {
+              switch (state.paymentMethod) {
+                case PaymentMethod.google_pay:
+                  return GooglePay(
+                    products: state.products!,
+                    total: state.total!,
+                  );
+                case PaymentMethod.credit_card:
+                  return Container(
+                    child: Text(
+                      'Pay with Credit Card',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4!
+                          .copyWith(color: Colors.white),
+                    ),
+                  );
+                default:
+                  return GooglePay(
+                    products: state.products!,
+                    total: state.total!,
+                  );
+              }
+            }
+            if (Platform.isIOS) {
+              switch (state.paymentMethod) {
+                case PaymentMethod.apple_pay:
+                  return ApplePay(
+                    products: state.products!,
+                    total: state.total!,
+                  );
+                case PaymentMethod.credit_card:
+                  return Container();
+                default:
+                  return ApplePay(
+                    products: state.products!,
+                    total: state.total!,
+                  );
+              }
+            } else {
+              return ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/payment-selection');
+                },
+                child: Text(
+                  'CHOOSE PAYMENT',
+                  style: Theme.of(context).textTheme.headline3,
+                ),
+              );
+            }
           } else {
             return Text('Something went wrong');
           }

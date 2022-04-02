@@ -1,0 +1,6 @@
+version: "Apple Swift version 5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
+options: "1ecb50a3e59a8c48721fce77c6776c2e0f936e162f2b2edde496077473b9b079"
+build_start_time: [1643223434, 371310949]
+build_end_time: [1643223434, 428493976]
+inputs:
+  "/Users/massimodelpezzo/Desktop/Flutter Apps/flutter_ecommerce_series/ios/Runner/AppDelegate.swift": !private [1624287970, 371487140]
