@@ -82,6 +82,10 @@ class CheckoutScreen extends StatelessWidget {
                       children: [
                         Center(
                           child: TextButton(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, '/payment-selection');
+                            },
                             child: Text(
                               'SELECT A PAYMENT METHOD',
                               style: Theme.of(context)
@@ -89,10 +93,6 @@ class CheckoutScreen extends StatelessWidget {
                                   .headline3!
                                   .copyWith(color: Colors.white),
                             ),
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                  context, '/payment-selection');
-                            },
                           ),
                         ),
                         IconButton(

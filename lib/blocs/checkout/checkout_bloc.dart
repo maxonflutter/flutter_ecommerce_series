@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:ecommerce/models/payment_method_model.dart';
 import 'package:equatable/equatable.dart';
 import '/blocs/blocs.dart';
 import '/models/models.dart';
@@ -47,14 +48,13 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
       },
     );
 
-    _paymentSubscription = _paymentBloc.stream.listen(
-      (state) {
-        if (state is PaymentLoaded)
-          add(
-            UpdateCheckout(paymentMethod: state.paymentMethod),
-          );
-      },
-    );
+    _paymentSubscription = _paymentBloc.stream.listen((state) {
+      if (state is PaymentLoaded) {
+        add(
+          UpdateCheckout(paymentMethod: state.paymentMethod),
+        );
+      }
+    });
   }
 
   void _onUpdateCheckout(
@@ -75,6 +75,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
           city: event.city ?? state.city,
           country: event.country ?? state.country,
           zipCode: event.zipCode ?? state.zipCode,
+          paymentMethod: event.paymentMethod ?? state.paymentMethod,
         ),
       );
     }
@@ -97,7 +98,6 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
   @override
   Future<void> close() {
     _cartSubscription?.cancel();
-    _paymentSubscription?.cancel();
     return super.close();
   }
 }

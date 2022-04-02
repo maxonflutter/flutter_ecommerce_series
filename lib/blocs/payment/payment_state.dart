@@ -12,8 +12,8 @@ class PaymentLoading extends PaymentState {}
 class PaymentLoaded extends PaymentState {
   final PaymentMethod paymentMethod;
 
-  PaymentLoaded({
-    this.paymentMethod = PaymentMethod.apple_pay,
+  const PaymentLoaded({
+    this.paymentMethod = PaymentMethod.google_pay,
   });
 
   @override

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:ecommerce/models/payment_method_model.dart';
 import 'package:equatable/equatable.dart';
-import '/models/models.dart';
 
 part 'payment_event.dart';
 part 'payment_state.dart';
@@ -15,13 +15,17 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     LoadPaymentMethod event,
     Emitter<PaymentState> emit,
   ) {
-    emit(PaymentLoaded());
+    emit(
+      PaymentLoaded(),
+    );
   }
 
   void _onSelectPaymentMethod(
     SelectPaymentMethod event,
     Emitter<PaymentState> emit,
   ) {
-    emit(PaymentLoaded(paymentMethod: event.paymentMethod));
+    emit(
+      PaymentLoaded(paymentMethod: event.paymentMethod),
+    );
   }
 }

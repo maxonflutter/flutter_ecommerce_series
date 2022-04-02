@@ -1,9 +1,9 @@
+import 'package:ecommerce/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:pay/pay.dart';
-import '/models/models.dart';
 
-class GooglePay extends StatelessWidget {
-  const GooglePay({
+class ApplePay extends StatelessWidget {
+  const ApplePay({
     Key? key,
     required this.total,
     required this.products,
@@ -15,39 +15,38 @@ class GooglePay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _paymentItems = products
-        .map((product) => PaymentItem(
+        .map(
+          (product) => PaymentItem(
               label: product.name,
               amount: product.price.toString(),
               type: PaymentItemType.item,
-              status: PaymentItemStatus.final_price,
-            ))
+              status: PaymentItemStatus.final_price),
+        )
         .toList();
 
     _paymentItems.add(
       PaymentItem(
-        label: 'Total',
+        label: "Total",
         amount: total,
         type: PaymentItemType.total,
         status: PaymentItemStatus.final_price,
       ),
     );
 
-    void onGooglePayResult(paymentResult) {
+    void onApplePayResult(paymentResult) {
       debugPrint(paymentResult.toString());
     }
 
     return SizedBox(
       width: MediaQuery.of(context).size.width - 50,
-      child: GooglePayButton(
-        paymentConfigurationAsset: 'payment_profile_google_pay.json',
+      child: ApplePayButton(
+        paymentConfigurationAsset: 'payment_profile_apple_pay.json',
+        onPaymentResult: onApplePayResult,
         paymentItems: _paymentItems,
-        style: GooglePayButtonStyle.white,
-        type: GooglePayButtonType.pay,
-        margin: const EdgeInsets.only(top: 10.0),
-        onPaymentResult: onGooglePayResult,
-        loadingIndicator: const Center(
-          child: CircularProgressIndicator(),
-        ),
+        style: ApplePayButtonStyle.white,
+        type: ApplePayButtonType.inStore,
+        margin: const EdgeInsets.only(top: 10),
+        loadingIndicator: const CircularProgressIndicator(),
       ),
     );
   }

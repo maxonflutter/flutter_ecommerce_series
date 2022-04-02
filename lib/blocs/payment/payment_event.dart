@@ -12,7 +12,7 @@ class LoadPaymentMethod extends PaymentEvent {}
 class SelectPaymentMethod extends PaymentEvent {
   final PaymentMethod paymentMethod;
 
-  SelectPaymentMethod({required this.paymentMethod});
+  const SelectPaymentMethod({required this.paymentMethod});
 
   @override
   List<Object> get props => [paymentMethod];

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ecommerce/models/payment_method_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/widgets/widgets.dart';
@@ -160,46 +161,50 @@ class CustomNavBar extends StatelessWidget {
             );
           }
           if (state is CheckoutLoaded) {
+            if (Platform.isAndroid) {
+              switch (state.paymentMethod) {
+                case PaymentMethod.google_pay:
+                  return GooglePay(
+                    products: state.products!,
+                    total: state.total!,
+                  );
+                case PaymentMethod.credit_card:
+                  return Container(
+                    child: Text(
+                      'Pay with Credit Card',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4!
+                          .copyWith(color: Colors.white),
+                    ),
+                  );
+                default:
+                  return GooglePay(
+                    products: state.products!,
+                    total: state.total!,
+                  );
+              }
+            }
             if (Platform.isIOS) {
               switch (state.paymentMethod) {
                 case PaymentMethod.apple_pay:
                   return ApplePay(
-                    total: state.total!,
                     products: state.products!,
+                    total: state.total!,
                   );
                 case PaymentMethod.credit_card:
-                  return SizedBox();
+                  return Container();
                 default:
                   return ApplePay(
-                    total: state.total!,
                     products: state.products!,
+                    total: state.total!,
                   );
               }
-            } else if (Platform.isAndroid)
-              switch (state.paymentMethod) {
-                case PaymentMethod.google_pay:
-                  print('Android');
-                  return GooglePay(
-                    total: state.total!,
-                    products: state.products!,
-                  );
-                case PaymentMethod.credit_card:
-                  return SizedBox();
-                default:
-                  return GooglePay(
-                    total: state.total!,
-                    products: state.products!,
-                  );
-              }
-            else {
+            } else {
               return ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/payment-selection');
                 },
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
-                  shape: RoundedRectangleBorder(),
-                ),
                 child: Text(
                   'CHOOSE PAYMENT',
                   style: Theme.of(context).textTheme.headline3,
