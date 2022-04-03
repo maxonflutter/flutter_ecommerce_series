@@ -64,7 +64,7 @@ class CartScreen extends StatelessWidget {
                             .keys
                             .length,
                         itemBuilder: (BuildContext context, int index) {
-                          return CartProductCard(
+                          return ProductCard.cart(
                             product: state.cart
                                 .productQuantity(state.cart.products)
                                 .keys
