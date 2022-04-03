@@ -217,6 +217,7 @@ class OrderNowNavBar extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushNamed(context, '/payment-selection');
                   },
+                  style: ElevatedButton.styleFrom(primary: Colors.white),
                   child: Text(
                     'CHOOSE PAYMENT',
                     style: Theme.of(context).textTheme.headline3,

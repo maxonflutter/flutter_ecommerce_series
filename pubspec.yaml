@@ -35,10 +35,15 @@ dependencies:
   cloud_firestore: ^3.1.6
   flutter_svg: ^1.0.0
   pay: ^1.0.7 
-  
+  hive: ^2.0.6
+  hive_flutter: ^1.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  hive_generator: ^1.1.2
+  build_runner: ^2.1.7
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

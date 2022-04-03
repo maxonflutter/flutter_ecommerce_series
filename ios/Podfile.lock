@@ -417,6 +417,8 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
+  - path_provider_ios (0.0.1):
+    - Flutter
   - pay_ios (0.0.1):
     - Flutter
   - PromisesObjC (2.0.0)
@@ -425,6 +427,7 @@ DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
+  - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
   - pay_ios (from `.symlinks/plugins/pay_ios/ios`)
 
 SPEC REPOS:
@@ -450,6 +453,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core/ios"
   Flutter:
     :path: Flutter
+  path_provider_ios:
+    :path: ".symlinks/plugins/path_provider_ios/ios"
   pay_ios:
     :path: ".symlinks/plugins/pay_ios/ios"
 
@@ -469,6 +474,7 @@ SPEC CHECKSUMS:
   gRPC-Core: 4afa11bfbedf7cdecd04de535a9e046893404ed5
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
+  path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
   pay_ios: 8c7beb9c61d885f3f51b61f75f8793023fc8843a
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
 
