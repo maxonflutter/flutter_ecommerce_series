@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '/blocs/cart/cart_bloc.dart';
+
+import '/blocs/blocs.dart';
 import '/widgets/widgets.dart';
 
 class CartScreen extends StatelessWidget {
@@ -21,12 +22,20 @@ class CartScreen extends StatelessWidget {
       body: BlocBuilder<CartBloc, CartState>(
         builder: (context, state) {
           if (state is CartLoading) {
-            return CircularProgressIndicator();
+            return Center(
+              child: CircularProgressIndicator(
+                color: Colors.black,
+              ),
+            );
           }
           if (state is CartLoaded) {
+            Map cart = state.cart.productQuantity(state.cart.products);
+
             return Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 10.0,
+              ),
               child: Column(
                 children: [
                   Row(
@@ -59,22 +68,14 @@ class CartScreen extends StatelessWidget {
                   SizedBox(
                     height: 400,
                     child: ListView.builder(
-                        itemCount: state.cart
-                            .productQuantity(state.cart.products)
-                            .keys
-                            .length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return ProductCard.cart(
-                            product: state.cart
-                                .productQuantity(state.cart.products)
-                                .keys
-                                .elementAt(index),
-                            quantity: state.cart
-                                .productQuantity(state.cart.products)
-                                .values
-                                .elementAt(index),
-                          );
-                        }),
+                      itemCount: cart.keys.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ProductCard.cart(
+                          product: cart.keys.elementAt(index),
+                          quantity: cart.values.elementAt(index),
+                        );
+                      },
+                    ),
                   ),
                   OrderSummary(),
                 ],
