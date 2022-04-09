@@ -1,11 +1,12 @@
 import 'dart:io';
 
-import 'package:ecommerce/blocs/payment/payment_bloc.dart';
-import 'package:ecommerce/models/payment_method_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pay/pay.dart';
+
+import '/blocs/blocs.dart';
 import '/widgets/widgets.dart';
+import '/models/models.dart';
 
 class PaymentSelection extends StatelessWidget {
   static const String routeName = '/payment-selection';

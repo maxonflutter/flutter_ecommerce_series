@@ -21,7 +21,11 @@ class WishlistScreen extends StatelessWidget {
         body: BlocBuilder<WishlistBloc, WishlistState>(
           builder: (context, state) {
             if (state is WishlistLoading) {
-              return CircularProgressIndicator();
+              return Center(
+                child: CircularProgressIndicator(
+                  color: Colors.black,
+                ),
+              );
             }
             if (state is WishlistLoaded) {
               return Padding(
@@ -36,11 +40,10 @@ class WishlistScreen extends StatelessWidget {
                   itemCount: state.wishlist.products.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Center(
-                        child: ProductCard(
-                      product: state.wishlist.products[index],
-                      widthFactor: 1.1,
-                      additionalButtons: true,
-                    ));
+                      child: ProductCard.wishlist(
+                        product: state.wishlist.products[index],
+                      ),
+                    );
                   },
                 ),
               );
