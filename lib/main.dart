@@ -1,4 +1,3 @@
-import 'package:ecommerce/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +9,7 @@ import '/blocs/blocs.dart';
 import '/repositories/repositories.dart';
 import '/screens/screens.dart';
 import '/simple_bloc_observer.dart';
+import '/models/models.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
