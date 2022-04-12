@@ -1,4 +1,5 @@
-import 'package:ecommerce/blocs/auth/auth_bloc.dart';
+import 'package:ecommerce/cubits/login/login_cubit.dart';
+import 'package:ecommerce/cubits/signup/signup_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,10 +36,12 @@ class MyApp extends StatelessWidget {
       home: MultiRepositoryProvider(
         providers: [
           RepositoryProvider(
-            create: (context) => AuthRepository(),
+            create: (context) => UserRepository(),
           ),
           RepositoryProvider(
-            create: (context) => UserRepository(),
+            create: (context) => AuthRepository(
+              userRepository: context.read<UserRepository>(),
+            ),
           ),
         ],
         child: MultiBlocProvider(
@@ -78,6 +81,16 @@ class MyApp extends StatelessWidget {
               create: (_) => ProductBloc(
                 productRepository: ProductRepository(),
               )..add(LoadProducts()),
+            ),
+            BlocProvider(
+              create: (context) => LoginCubit(
+                authRepository: context.read<AuthRepository>(),
+              ),
+            ),
+            BlocProvider(
+              create: (context) => SignupCubit(
+                authRepository: context.read<AuthRepository>(),
+              ),
             ),
           ],
           child: MaterialApp(
