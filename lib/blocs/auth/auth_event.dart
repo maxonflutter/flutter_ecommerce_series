@@ -17,8 +17,5 @@ class AuthUserChanged extends AuthEvent {
   });
 
   @override
-  List<Object?> get props => [
-        authUser,
-        user,
-      ];
+  List<Object?> get props => [authUser, user];
 }
