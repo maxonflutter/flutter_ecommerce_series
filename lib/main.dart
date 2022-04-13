@@ -1,5 +1,3 @@
-import 'package:ecommerce/cubits/login/login_cubit.dart';
-import 'package:ecommerce/cubits/signup/signup_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '/config/theme.dart';
 import '/config/app_router.dart';
 import '/blocs/blocs.dart';
+import '/cubits/cubits.dart';
 import '/repositories/repositories.dart';
 import '/screens/screens.dart';
 import '/simple_bloc_observer.dart';
@@ -81,6 +80,11 @@ class MyApp extends StatelessWidget {
               create: (_) => ProductBloc(
                 productRepository: ProductRepository(),
               )..add(LoadProducts()),
+            ),
+            BlocProvider(
+              create: (context) => SearchBloc(
+                productBloc: context.read<ProductBloc>(),
+              )..add(LoadSearch()),
             ),
             BlocProvider(
               create: (context) => LoginCubit(

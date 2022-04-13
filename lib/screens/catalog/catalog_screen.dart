@@ -25,40 +25,51 @@ class CatalogScreen extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(title: category.name),
       bottomNavigationBar: CustomNavBar(screen: routeName),
-      body: BlocBuilder<ProductBloc, ProductState>(
-        builder: (context, state) {
-          if (state is ProductLoading) {
-            return Center(
-              child: CircularProgressIndicator(color: Colors.black),
-            );
-          }
-          if (state is ProductLoaded) {
-            final List<Product> categoryProducts = state.products
-                .where((product) => product.category == category.name)
-                .toList();
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            SearchBox(),
+            BlocBuilder<ProductBloc, ProductState>(
+              builder: (context, state) {
+                if (state is ProductLoading) {
+                  return Center(
+                    child: CircularProgressIndicator(color: Colors.black),
+                  );
+                }
+                if (state is ProductLoaded) {
+                  final List<Product> categoryProducts = state.products
+                      .where((product) => product.category == category.name)
+                      .toList();
 
-            return GridView.builder(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8.0,
-                vertical: 16.0,
-              ),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1.15,
-              ),
-              itemCount: categoryProducts.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Center(
-                  child: ProductCard.catalog(
-                    product: categoryProducts[index],
-                  ),
-                );
+                  return GridView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                      vertical: 16.0,
+                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1.15,
+                    ),
+                    itemCount: categoryProducts.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Center(
+                        child: ProductCard.catalog(
+                          product: categoryProducts[index],
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return Text('Something went wrong');
+                }
               },
-            );
-          } else {
-            return Text('Something went wrong');
-          }
-        },
+            ),
+          ],
+        ),
       ),
     );
   }

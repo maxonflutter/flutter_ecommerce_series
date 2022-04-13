@@ -6,5 +6,5 @@ export 'hero_carousel_card.dart';
 export 'google_pay.dart';
 export 'order_summary.dart';
 export 'product_card.dart';
-export 'product_carousel.dart';
+export 'search_box.dart';
 export 'section_title.dart';
