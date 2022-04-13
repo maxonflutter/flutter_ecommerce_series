@@ -33,6 +33,7 @@ dependencies:
   flutter_bloc: ^8.0.1
   firebase_core: ^1.14.0
   firebase_auth: ^3.3.13
+  google_sign_in: ^5.3.0
   cloud_firestore: ^3.1.11
   flutter_svg: ^1.0.0
   pay: ^1.0.7 
