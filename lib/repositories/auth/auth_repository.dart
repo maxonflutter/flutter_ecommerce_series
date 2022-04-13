@@ -17,14 +17,16 @@ class AuthRepository extends BaseAuthRepository {
     required User user,
   }) async {
     try {
-      final credential = await _firebaseAuth.createUserWithEmailAndPassword(
+      _firebaseAuth
+          .createUserWithEmailAndPassword(
         email: user.email,
         password: password,
-      );
-
-      user.copyWith(id: credential.user!.uid);
-
-      await _userRepository.createUser(user);
+      )
+          .then((value) {
+        _userRepository.createUser(
+          user.copyWith(id: value.user!.uid),
+        );
+      });
     } catch (_) {}
   }
 
