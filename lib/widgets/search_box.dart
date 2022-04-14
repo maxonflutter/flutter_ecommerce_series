@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../blocs/blocs.dart';
+import '../models/models.dart';
 import 'product_card.dart';
 
 class SearchBox extends StatelessWidget {
   const SearchBox({
     Key? key,
+    this.category,
   }) : super(key: key);
+
+  final Category? category;
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +51,10 @@ class SearchBox extends StatelessWidget {
                           ),
                         ),
                         onChanged: (value) {
-                          context
-                              .read<SearchBloc>()
-                              .add(SearchProduct(productName: value));
+                          context.read<SearchBloc>().add(SearchProduct(
+                                productName: value,
+                                category: category,
+                              ));
                         },
                       ),
                     ),

@@ -29,7 +29,7 @@ class CatalogScreen extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 10),
-            SearchBox(),
+            SearchBox(category: category),
             BlocBuilder<ProductBloc, ProductState>(
               builder: (context, state) {
                 if (state is ProductLoading) {

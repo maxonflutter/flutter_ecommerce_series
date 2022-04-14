@@ -11,11 +11,15 @@ class LoadSearch extends SearchEvent {}
 
 class SearchProduct extends SearchEvent {
   final String productName;
+  final Category? category;
 
-  const SearchProduct({required this.productName});
+  const SearchProduct({
+    required this.productName,
+    this.category,
+  });
 
   @override
-  List<Object?> get props => [productName];
+  List<Object?> get props => [productName, category];
 }
 
 class UpdateResults extends SearchEvent {
