@@ -63,6 +63,8 @@ class User extends Equatable {
     };
   }
 
+  static const empty = User(id: '');
+
   @override
   List<Object?> get props =>
       [id, fullName, email, address, city, country, zipCode];

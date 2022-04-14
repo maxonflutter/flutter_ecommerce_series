@@ -4,10 +4,12 @@ class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     Key? key,
     required this.title,
+    this.initialValue,
     this.onChanged,
   }) : super(key: key);
 
   final String title;
+  final String? initialValue;
   final Function(String)? onChanged;
 
   @override
@@ -25,6 +27,7 @@ class CustomTextFormField extends StatelessWidget {
           ),
           Expanded(
             child: TextFormField(
+              initialValue: initialValue,
               onChanged: onChanged,
               decoration: InputDecoration(
                 isDense: true,

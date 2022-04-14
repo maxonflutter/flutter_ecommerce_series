@@ -8,37 +8,18 @@ abstract class CheckoutEvent extends Equatable {
 }
 
 class UpdateCheckout extends CheckoutEvent {
-  final String? fullName;
-  final String? email;
-  final String? address;
-  final String? city;
-  final String? country;
-  final String? zipCode;
+  final User? user;
   final Cart? cart;
   final PaymentMethod? paymentMethod;
 
   UpdateCheckout({
-    this.fullName,
-    this.email,
-    this.address,
-    this.city,
-    this.country,
-    this.zipCode,
+    this.user,
     this.cart,
     this.paymentMethod,
   });
 
   @override
-  List<Object?> get props => [
-        fullName,
-        email,
-        address,
-        city,
-        country,
-        zipCode,
-        cart,
-        paymentMethod,
-      ];
+  List<Object?> get props => [user, cart, paymentMethod];
 }
 
 class ConfirmCheckout extends CheckoutEvent {
