@@ -1,4 +1,4 @@
-import 'package:ecommerce/models/product_model.dart';
+import 'package:ecommerce/blocs/auth/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +10,7 @@ import '/blocs/blocs.dart';
 import '/repositories/repositories.dart';
 import '/screens/screens.dart';
 import '/simple_bloc_observer.dart';
+import '/models/models.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,48 +32,61 @@ class MyApp extends StatelessWidget {
       title: 'Zero To Unicorn',
       debugShowCheckedModeBanner: false,
       theme: theme(),
-      home: MultiBlocProvider(
+      home: MultiRepositoryProvider(
         providers: [
-          BlocProvider(
-            create: (_) => CartBloc()..add(LoadCart()),
+          RepositoryProvider(
+            create: (context) => AuthRepository(),
           ),
-          BlocProvider(
-            create: (_) => PaymentBloc()
-              ..add(
-                LoadPaymentMethod(),
-              ),
-          ),
-          BlocProvider(
-            create: (context) => CheckoutBloc(
-              cartBloc: context.read<CartBloc>(),
-              paymentBloc: context.read<PaymentBloc>(),
-              checkoutRepository: CheckoutRepository(),
-            ),
-          ),
-          BlocProvider(
-            create: (_) => WishlistBloc(
-              localStorageRepository: LocalStorageRepository(),
-            )..add(
-                StartWishlist(),
-              ),
-          ),
-          BlocProvider(
-            create: (_) => CategoryBloc(
-              categoryRepository: CategoryRepository(),
-            )..add(LoadCategories()),
-          ),
-          BlocProvider(
-            create: (_) => ProductBloc(
-              productRepository: ProductRepository(),
-            )..add(LoadProducts()),
+          RepositoryProvider(
+            create: (context) => UserRepository(),
           ),
         ],
-        child: MaterialApp(
-          title: 'Zero To Unicorn',
-          debugShowCheckedModeBanner: false,
-          theme: theme(),
-          onGenerateRoute: AppRouter.onGenerateRoute,
-          initialRoute: SplashScreen.routeName,
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => AuthBloc(
+                authRepository: context.read<AuthRepository>(),
+                userRepository: context.read<UserRepository>(),
+              ),
+            ),
+            BlocProvider(
+              create: (_) => CartBloc()..add(LoadCart()),
+            ),
+            BlocProvider(
+              create: (_) => PaymentBloc()..add(LoadPaymentMethod()),
+            ),
+            BlocProvider(
+              create: (context) => CheckoutBloc(
+                cartBloc: context.read<CartBloc>(),
+                paymentBloc: context.read<PaymentBloc>(),
+                checkoutRepository: CheckoutRepository(),
+              ),
+            ),
+            BlocProvider(
+              create: (_) => WishlistBloc(
+                localStorageRepository: LocalStorageRepository(),
+              )..add(StartWishlist()),
+            ),
+            BlocProvider(
+              create: (_) => CategoryBloc(
+                categoryRepository: CategoryRepository(),
+              )..add(
+                  LoadCategories(),
+                ),
+            ),
+            BlocProvider(
+              create: (_) => ProductBloc(
+                productRepository: ProductRepository(),
+              )..add(LoadProducts()),
+            ),
+          ],
+          child: MaterialApp(
+            title: 'Zero To Unicorn',
+            debugShowCheckedModeBanner: false,
+            theme: theme(),
+            onGenerateRoute: AppRouter.onGenerateRoute,
+            initialRoute: SplashScreen.routeName,
+          ),
         ),
       ),
     );

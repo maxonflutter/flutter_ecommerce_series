@@ -195,16 +195,24 @@ class ProductInformation extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(product.name,
+            SizedBox(
+              width: 85,
+              child: Text(
+                product.name,
+                maxLines: 1,
                 style: Theme.of(context)
                     .textTheme
                     .headline5!
-                    .copyWith(color: fontColor)),
-            Text('\$${product.price}',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6!
-                    .copyWith(color: fontColor)),
+                    .copyWith(color: fontColor),
+              ),
+            ),
+            Text(
+              '\$${product.price}',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline6!
+                  .copyWith(color: fontColor),
+            ),
           ],
         ),
         isOrderSummary
