@@ -1,20 +1,24 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '/config/theme.dart';
-import '/config/app_router.dart';
+import '.env';
 import '/blocs/blocs.dart';
+import '/config/app_router.dart';
+import '/config/theme.dart';
 import '/cubits/cubits.dart';
+import '/models/models.dart';
 import '/repositories/repositories.dart';
 import '/screens/screens.dart';
 import '/simple_bloc_observer.dart';
-import '/models/models.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  Stripe.publishableKey = stripePublishableKey;
+  await Stripe.instance.applySettings();
   await Hive.initFlutter();
   Hive.registerAdapter(ProductAdapter());
   BlocOverrides.runZoned(
@@ -55,7 +59,7 @@ class MyApp extends StatelessWidget {
               create: (_) => CartBloc()..add(LoadCart()),
             ),
             BlocProvider(
-              create: (_) => PaymentBloc()..add(LoadPaymentMethod()),
+              create: (_) => PaymentBloc()..add(StartPayment()),
             ),
             BlocProvider(
               create: (context) => CheckoutBloc(
@@ -103,7 +107,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: theme(),
             onGenerateRoute: AppRouter.onGenerateRoute,
-            initialRoute: ProfileScreen.routeName,
+            initialRoute: HomeScreen.routeName,
           ),
         ),
       ),

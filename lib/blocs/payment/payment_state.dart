@@ -1,21 +1,43 @@
 part of 'payment_bloc.dart';
 
-abstract class PaymentState extends Equatable {
-  const PaymentState();
+enum PaymentMethod { apple_pay, google_pay, credit_card }
 
-  @override
-  List<Object> get props => [];
-}
+enum PaymentStatus { initial, loading, success, failure }
 
-class PaymentLoading extends PaymentState {}
-
-class PaymentLoaded extends PaymentState {
+class PaymentState extends Equatable {
+  final PaymentStatus status;
   final PaymentMethod paymentMethod;
+  final stripe.CardFieldInputDetails? cardFieldInputDetails;
+  final String? paymentMethodId;
 
-  const PaymentLoaded({
-    this.paymentMethod = PaymentMethod.google_pay,
+  const PaymentState({
+    this.status = PaymentStatus.initial,
+    this.paymentMethod = PaymentMethod.credit_card,
+    this.cardFieldInputDetails =
+        const stripe.CardFieldInputDetails(complete: false),
+    this.paymentMethodId,
   });
 
+  PaymentState copyWith({
+    PaymentStatus? status,
+    PaymentMethod? paymentMethod,
+    stripe.CardFieldInputDetails? cardFieldInputDetails,
+    String? paymentMethodId,
+  }) {
+    return PaymentState(
+      status: status ?? this.status,
+      paymentMethod: paymentMethod ?? this.paymentMethod,
+      cardFieldInputDetails:
+          cardFieldInputDetails ?? this.cardFieldInputDetails,
+      paymentMethodId: paymentMethodId ?? this.paymentMethodId,
+    );
+  }
+
   @override
-  List<Object> get props => [paymentMethod];
+  List<Object?> get props => [
+        status,
+        paymentMethod,
+        cardFieldInputDetails,
+        paymentMethodId,
+      ];
 }

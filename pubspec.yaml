@@ -33,12 +33,14 @@ dependencies:
   flutter_bloc: ^8.0.1
   firebase_core: ^1.14.0
   firebase_auth: ^3.3.13
-  google_sign_in: ^5.3.0
+  google_sign_in: ^5.3.3
   cloud_firestore: ^3.1.11
   flutter_svg: ^1.0.0
-  pay: ^1.0.7 
+  pay: ^1.0.10
   hive: ^2.0.6
   hive_flutter: ^1.1.0
+  flutter_stripe: ^3.2.0
+  http: ^0.13.1
 
 dev_dependencies:
   flutter_test:

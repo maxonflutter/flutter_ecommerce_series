@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stripe/flutter_stripe.dart' as stripe;
 
 import '/widgets/widgets.dart';
 import '/blocs/blocs.dart';
@@ -188,14 +189,23 @@ class OrderNowNavBar extends StatelessWidget {
               );
             }
             if (state is CheckoutLoaded) {
-              if (state.paymentMethod == PaymentMethod.credit_card) {
-                return Container(
+              if (state.paymentMethod == PaymentMethod.credit_card &&
+                  state.paymentMethodId != null) {
+                return ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                  ),
+                  onPressed: () {
+                    context.read<PaymentBloc>().add(
+                          CreatePaymentIntent(
+                            paymentMethodId: state.paymentMethodId!,
+                            amount: (double.parse(state.total!) * 100).toInt(),
+                          ),
+                        );
+                  },
                   child: Text(
                     'Pay with Credit Card',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline4!
-                        .copyWith(color: Colors.white),
+                    style: Theme.of(context).textTheme.headline4,
                   ),
                 );
               }

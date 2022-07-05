@@ -17,6 +17,7 @@ class CheckoutLoaded extends CheckoutState {
   final String? total;
   final Checkout checkout;
   final PaymentMethod paymentMethod;
+  final String? paymentMethodId;
 
   CheckoutLoaded({
     this.user = User.empty,
@@ -25,6 +26,7 @@ class CheckoutLoaded extends CheckoutState {
     this.deliveryFee,
     this.total,
     this.paymentMethod = PaymentMethod.google_pay,
+    this.paymentMethodId,
   }) : checkout = Checkout(
           user: user,
           products: products,
@@ -34,6 +36,14 @@ class CheckoutLoaded extends CheckoutState {
         );
 
   @override
-  List<Object?> get props =>
-      [user, products, subtotal, deliveryFee, total, checkout, paymentMethod];
+  List<Object?> get props => [
+        user,
+        products,
+        subtotal,
+        deliveryFee,
+        total,
+        checkout,
+        paymentMethod,
+        paymentMethodId
+      ];
 }

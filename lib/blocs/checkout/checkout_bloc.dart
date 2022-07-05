@@ -63,8 +63,11 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
 
     _paymentSubscription = _paymentBloc.stream.listen(
       (state) {
-        if (state is PaymentLoaded) {
-          add(UpdateCheckout(paymentMethod: state.paymentMethod));
+        if (state.status == PaymentStatus.initial) {
+          add(UpdateCheckout(
+            paymentMethod: state.paymentMethod,
+            paymentMethodId: state.paymentMethodId,
+          ));
         }
       },
     );
@@ -84,6 +87,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
           subtotal: event.cart?.subtotalString ?? state.subtotal,
           total: event.cart?.totalString ?? state.total,
           paymentMethod: event.paymentMethod ?? state.paymentMethod,
+          paymentMethodId: event.paymentMethodId ?? state.paymentMethodId,
         ),
       );
     }
