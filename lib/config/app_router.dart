@@ -23,7 +23,9 @@ class AppRouter {
       case CheckoutScreen.routeName:
         return CheckoutScreen.route();
       case OrderConfirmation.routeName:
-        return OrderConfirmation.route();
+        return OrderConfirmation.route(
+          checkoutId: settings.arguments as String,
+        );
       case PaymentSelection.routeName:
         return PaymentSelection.route();
       case ProfileScreen.routeName:

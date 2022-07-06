@@ -10,7 +10,19 @@ class CheckoutRepository extends BaseCheckoutRepository {
   }) : _firebaseFirestore = firebaseFirestore ?? FirebaseFirestore.instance;
 
   @override
-  Future<void> addCheckout(Checkout checkout) {
-    return _firebaseFirestore.collection('checkout').add(checkout.toDocument());
+  Future<String> addCheckout(Checkout checkout) async {
+    DocumentReference<Map<String, dynamic>> data = await _firebaseFirestore
+        .collection('checkout')
+        .add(checkout.toDocument());
+    return data.id;
+  }
+
+  @override
+  Future<Checkout> getCheckout(String checkoutId) async {
+    DocumentSnapshot<Map<String, dynamic>> doc =
+        await _firebaseFirestore.collection('checkout').doc(checkoutId).get();
+
+    return Checkout.fromJson(doc.data()!, doc.id);
+    ;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+
 import '/models/product_model.dart';
 
 class Cart extends Equatable {
@@ -8,6 +9,21 @@ class Cart extends Equatable {
 
   @override
   List<Object?> get props => [products];
+
+  Map<String, dynamic> toDocument() {
+    return {
+      'products': products.map((product) => product.toDocument()).toList(),
+    };
+  }
+
+  static Cart fromJson(Map<String, dynamic> json) {
+    Cart cart = Cart(
+      products: (json['products'] as List)
+          .map((product) => Product.fromJson(product))
+          .toList(),
+    );
+    return cart;
+  }
 
   Map productQuantity(products) {
     var quantity = Map();

@@ -34,7 +34,7 @@ class UserRepository extends BaseUserRepository {
         .doc(userId)
         .snapshots()
         .map((snap) {
-      return User.fromSnapshot(snap);
+      return User.fromJson(snap.data()!, snap.id);
     });
   }
 

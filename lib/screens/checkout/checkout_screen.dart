@@ -1,3 +1,4 @@
+import 'package:ecommerce/screens/order_confirmation/order_confirmation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,7 +23,16 @@ class CheckoutScreen extends StatelessWidget {
       bottomNavigationBar: CustomNavBar(screen: routeName),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: BlocBuilder<CheckoutBloc, CheckoutState>(
+        child: BlocConsumer<CheckoutBloc, CheckoutState>(
+          listener: ((context, state) {
+            if ((state as CheckoutLoaded).checkout.isPaymentSuccessful) {
+              Navigator.pushNamed(
+                context,
+                OrderConfirmation.routeName,
+                arguments: state.checkout.id,
+              );
+            }
+          }),
           builder: (context, state) {
             if (state is CheckoutLoading) {
               return Center(
@@ -30,7 +40,7 @@ class CheckoutScreen extends StatelessWidget {
               );
             }
             if (state is CheckoutLoaded) {
-              var user = state.user ?? User.empty;
+              var user = state.checkout.user ?? User.empty;
 
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -44,23 +54,23 @@ class CheckoutScreen extends StatelessWidget {
                     title: 'Email',
                     initialValue: user.email,
                     onChanged: (value) {
-                      context.read<CheckoutBloc>().add(
-                            UpdateCheckout(
-                              user: state.checkout.user!.copyWith(email: value),
-                            ),
-                          );
+                      User user = state.checkout.user!.copyWith(email: value);
+
+                      context.read<CheckoutBloc>().add(UpdateCheckout(
+                            state.checkout.copyWith(user: user),
+                          ));
                     },
                   ),
                   CustomTextFormField(
                     title: 'Full Name',
                     initialValue: user.fullName,
                     onChanged: (value) {
-                      context.read<CheckoutBloc>().add(
-                            UpdateCheckout(
-                              user: state.checkout.user!
-                                  .copyWith(fullName: value),
-                            ),
-                          );
+                      User user =
+                          state.checkout.user!.copyWith(fullName: value);
+
+                      context.read<CheckoutBloc>().add(UpdateCheckout(
+                            state.checkout.copyWith(user: user),
+                          ));
                     },
                   ),
                   SizedBox(height: 20),
@@ -72,47 +82,44 @@ class CheckoutScreen extends StatelessWidget {
                     title: 'Address',
                     initialValue: user.address,
                     onChanged: (value) {
-                      context.read<CheckoutBloc>().add(
-                            UpdateCheckout(
-                              user:
-                                  state.checkout.user!.copyWith(address: value),
-                            ),
-                          );
+                      User user = state.checkout.user!.copyWith(address: value);
+
+                      context.read<CheckoutBloc>().add(UpdateCheckout(
+                            state.checkout.copyWith(user: user),
+                          ));
                     },
                   ),
                   CustomTextFormField(
                     title: 'City',
                     initialValue: user.city,
                     onChanged: (value) {
-                      context.read<CheckoutBloc>().add(
-                            UpdateCheckout(
-                              user: state.checkout.user!.copyWith(city: value),
-                            ),
-                          );
+                      User user = state.checkout.user!.copyWith(city: value);
+
+                      context.read<CheckoutBloc>().add(UpdateCheckout(
+                            state.checkout.copyWith(user: user),
+                          ));
                     },
                   ),
                   CustomTextFormField(
                     title: 'Country',
                     initialValue: user.country,
                     onChanged: (value) {
-                      context.read<CheckoutBloc>().add(
-                            UpdateCheckout(
-                              user:
-                                  state.checkout.user!.copyWith(country: value),
-                            ),
-                          );
+                      User user = state.checkout.user!.copyWith(country: value);
+
+                      context.read<CheckoutBloc>().add(UpdateCheckout(
+                            state.checkout.copyWith(user: user),
+                          ));
                     },
                   ),
                   CustomTextFormField(
                     title: 'ZIP Code',
                     initialValue: user.zipCode,
                     onChanged: (value) {
-                      context.read<CheckoutBloc>().add(
-                            UpdateCheckout(
-                              user:
-                                  state.checkout.user!.copyWith(zipCode: value),
-                            ),
-                          );
+                      User user = state.checkout.user!.copyWith(zipCode: value);
+
+                      context.read<CheckoutBloc>().add(UpdateCheckout(
+                            state.checkout.copyWith(user: user),
+                          ));
                     },
                   ),
                   SizedBox(height: 20),
@@ -155,7 +162,7 @@ class CheckoutScreen extends StatelessWidget {
                     'ORDER SUMMARY',
                     style: Theme.of(context).textTheme.headline3,
                   ),
-                  OrderSummary()
+                  OrderSummary(cart: state.checkout.cart)
                 ],
               );
             } else {

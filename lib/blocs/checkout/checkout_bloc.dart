@@ -17,7 +17,6 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
   StreamSubscription? _authSubscription;
   StreamSubscription? _cartSubscription;
   StreamSubscription? _paymentSubscription;
-  StreamSubscription? _checkoutSubscription;
 
   CheckoutBloc({
     required AuthBloc authBloc,
@@ -31,12 +30,10 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
         super(
           cartBloc.state is CartLoaded
               ? CheckoutLoaded(
-                  user: authBloc.state.user,
-                  products: (cartBloc.state as CartLoaded).cart.products,
-                  deliveryFee:
-                      (cartBloc.state as CartLoaded).cart.deliveryFeeString,
-                  subtotal: (cartBloc.state as CartLoaded).cart.subtotalString,
-                  total: (cartBloc.state as CartLoaded).cart.totalString,
+                  checkout: Checkout(
+                    user: authBloc.state.user,
+                    cart: (cartBloc.state as CartLoaded).cart,
+                  ),
                 )
               : CheckoutLoading(),
         ) {
@@ -46,9 +43,15 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     _authSubscription = _authBloc.stream.listen(
       (state) {
         if (state.status == AuthStatus.unauthenticated) {
-          add(UpdateCheckout(user: User.empty));
+          Checkout checkout = (this.state as CheckoutLoaded)
+              .checkout
+              .copyWith(user: User.empty);
+          add(UpdateCheckout(checkout));
         } else {
-          add(UpdateCheckout(user: state.user));
+          Checkout checkout = (this.state as CheckoutLoaded)
+              .checkout
+              .copyWith(user: state.user);
+          add(UpdateCheckout(checkout));
         }
       },
     );
@@ -56,7 +59,10 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     _cartSubscription = _cartBloc.stream.listen(
       (state) {
         if (state is CartLoaded) {
-          add(UpdateCheckout(cart: state.cart));
+          Checkout checkout = (this.state as CheckoutLoaded)
+              .checkout
+              .copyWith(cart: state.cart);
+          add(UpdateCheckout(checkout));
         }
       },
     );
@@ -64,10 +70,14 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     _paymentSubscription = _paymentBloc.stream.listen(
       (state) {
         if (state.status == PaymentStatus.initial) {
-          add(UpdateCheckout(
-            paymentMethod: state.paymentMethod,
-            paymentMethodId: state.paymentMethodId,
-          ));
+          Checkout checkout = (this.state as CheckoutLoaded).checkout.copyWith(
+                paymentMethod: state.paymentMethod,
+                paymentMethodId: state.paymentMethodId,
+              );
+          add(UpdateCheckout(checkout));
+        }
+        if (state.status == PaymentStatus.success) {
+          add(ConfirmCheckout(true));
         }
       },
     );
@@ -78,17 +88,8 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     Emitter<CheckoutState> emit,
   ) {
     if (this.state is CheckoutLoaded) {
-      final state = this.state as CheckoutLoaded;
       emit(
-        CheckoutLoaded(
-          user: event.user ?? state.user,
-          products: event.cart?.products ?? state.products,
-          deliveryFee: event.cart?.deliveryFeeString ?? state.deliveryFee,
-          subtotal: event.cart?.subtotalString ?? state.subtotal,
-          total: event.cart?.totalString ?? state.total,
-          paymentMethod: event.paymentMethod ?? state.paymentMethod,
-          paymentMethodId: event.paymentMethodId ?? state.paymentMethodId,
-        ),
+        CheckoutLoaded(checkout: event.checkout),
       );
     }
   }
@@ -97,12 +98,13 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     ConfirmCheckout event,
     Emitter<CheckoutState> emit,
   ) async {
-    _checkoutSubscription?.cancel();
     if (this.state is CheckoutLoaded) {
       try {
-        await _checkoutRepository.addCheckout(event.checkout);
-        print('Done');
-        emit(CheckoutLoading());
+        final state = this.state as CheckoutLoaded;
+        Checkout checkout = state.checkout.copyWith(isPaymentSuccessful: true);
+        String checkoutId =
+            await _checkoutRepository.addCheckout(state.checkout);
+        emit(CheckoutLoaded(checkout: checkout.copyWith(id: checkoutId)));
       } catch (_) {}
     }
   }

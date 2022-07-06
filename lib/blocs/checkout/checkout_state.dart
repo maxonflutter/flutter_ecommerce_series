@@ -10,40 +10,12 @@ abstract class CheckoutState extends Equatable {
 class CheckoutLoading extends CheckoutState {}
 
 class CheckoutLoaded extends CheckoutState {
-  final User? user;
-  final List<Product>? products;
-  final String? subtotal;
-  final String? deliveryFee;
-  final String? total;
   final Checkout checkout;
-  final PaymentMethod paymentMethod;
-  final String? paymentMethodId;
 
   CheckoutLoaded({
-    this.user = User.empty,
-    this.products,
-    this.subtotal,
-    this.deliveryFee,
-    this.total,
-    this.paymentMethod = PaymentMethod.google_pay,
-    this.paymentMethodId,
-  }) : checkout = Checkout(
-          user: user,
-          products: products,
-          subtotal: subtotal,
-          deliveryFee: deliveryFee,
-          total: total,
-        );
+    required this.checkout,
+  });
 
   @override
-  List<Object?> get props => [
-        user,
-        products,
-        subtotal,
-        deliveryFee,
-        total,
-        checkout,
-        paymentMethod,
-        paymentMethodId
-      ];
+  List<Object?> get props => [checkout];
 }

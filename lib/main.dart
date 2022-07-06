@@ -46,6 +46,9 @@ class MyApp extends StatelessWidget {
               userRepository: context.read<UserRepository>(),
             ),
           ),
+          RepositoryProvider(
+            create: (context) => CheckoutRepository(),
+          ),
         ],
         child: MultiBlocProvider(
           providers: [
@@ -66,7 +69,7 @@ class MyApp extends StatelessWidget {
                 authBloc: context.read<AuthBloc>(),
                 cartBloc: context.read<CartBloc>(),
                 paymentBloc: context.read<PaymentBloc>(),
-                checkoutRepository: CheckoutRepository(),
+                checkoutRepository: context.read<CheckoutRepository>(),
               ),
             ),
             BlocProvider(
@@ -107,7 +110,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: theme(),
             onGenerateRoute: AppRouter.onGenerateRoute,
-            initialRoute: HomeScreen.routeName,
+            initialRoute: SplashScreen.routeName,
           ),
         ),
       ),

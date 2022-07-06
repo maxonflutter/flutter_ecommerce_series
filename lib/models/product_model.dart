@@ -34,18 +34,31 @@ class Product extends Equatable {
     this.description,
   });
 
-  static Product fromSnapshot(DocumentSnapshot snap) {
+  static Product fromJson(Map<String, dynamic> json, [String? id]) {
     Product product = Product(
-      id: snap.id,
-      name: snap['name'],
-      category: snap['category'],
-      imageUrl: snap['imageUrl'],
-      price: snap['price'],
-      isRecommended: snap['isRecommended'],
-      isPopular: snap['isPopular'],
-      description: snap['description'],
+      id: id ?? json['id'],
+      name: json['name'],
+      category: json['category'],
+      imageUrl: json['imageUrl'],
+      price: json['price'],
+      isRecommended: json['isRecommended'],
+      isPopular: json['isPopular'],
+      description: json['description'],
     );
     return product;
+  }
+
+  Map<String, dynamic> toDocument() {
+    return {
+      'id': id,
+      'name': name,
+      'category': category,
+      'imageUrl': imageUrl,
+      'price': price,
+      'isRecommended': isRecommended,
+      'isPopular': isPopular,
+      'description': description,
+    };
   }
 
   @override

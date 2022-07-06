@@ -1,5 +1,6 @@
 import '/models/models.dart';
 
 abstract class BaseCheckoutRepository {
-  Future<void> addCheckout(Checkout checkout);
+  Future<String> addCheckout(Checkout checkout);
+  Future<Checkout> getCheckout(String checkoutId);
 }

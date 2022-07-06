@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ecommerce/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart' as stripe;
@@ -189,8 +190,8 @@ class OrderNowNavBar extends StatelessWidget {
               );
             }
             if (state is CheckoutLoaded) {
-              if (state.paymentMethod == PaymentMethod.credit_card &&
-                  state.paymentMethodId != null) {
+              if (state.checkout.paymentMethod == PaymentMethod.credit_card &&
+                  state.checkout.paymentMethodId != null) {
                 return ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: Colors.white,
@@ -198,8 +199,8 @@ class OrderNowNavBar extends StatelessWidget {
                   onPressed: () {
                     context.read<PaymentBloc>().add(
                           CreatePaymentIntent(
-                            paymentMethodId: state.paymentMethodId!,
-                            amount: (double.parse(state.total!) * 100).toInt(),
+                            paymentMethodId: state.checkout.paymentMethodId!,
+                            amount: state.checkout.total,
                           ),
                         );
                   },
@@ -210,17 +211,17 @@ class OrderNowNavBar extends StatelessWidget {
                 );
               }
               if (Platform.isAndroid &&
-                  state.paymentMethod == PaymentMethod.google_pay) {
+                  state.checkout.paymentMethod == PaymentMethod.google_pay) {
                 return GooglePay(
-                  products: state.products!,
-                  total: state.total!,
+                  products: state.checkout.cart.products,
+                  total: state.checkout.total.toString(),
                 );
               }
               if (Platform.isIOS &&
-                  state.paymentMethod == PaymentMethod.apple_pay) {
+                  state.checkout.paymentMethod == PaymentMethod.apple_pay) {
                 return ApplePay(
-                  products: state.products!,
-                  total: state.total!,
+                  products: state.checkout.cart.products,
+                  total: state.checkout.total.toString(),
                 );
               } else {
                 return ElevatedButton(

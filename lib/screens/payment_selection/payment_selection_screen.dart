@@ -58,6 +58,7 @@ class PaymentSelection extends StatelessWidget {
                             billingDetails: stripe.BillingDetails(
                               email: (context.read<CheckoutBloc>().state
                                       as CheckoutLoaded)
+                                  .checkout
                                   .user!
                                   .email,
                             ),

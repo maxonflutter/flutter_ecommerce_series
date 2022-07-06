@@ -77,7 +77,7 @@ class CartScreen extends StatelessWidget {
                       },
                     ),
                   ),
-                  OrderSummary(),
+                  OrderSummary(cart: state.cart),
                 ],
               ),
             );
