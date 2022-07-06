@@ -16,15 +16,17 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Timer(
-      Duration(seconds: 1),
-      () => Navigator.pushNamed(context, '/'),
-    );
-
     return BlocListener<AuthBloc, AuthState>(
-      listenWhen: (previous, current) => previous.authUser != current.authUser,
+      listenWhen: (previous, current) {
+        return previous.authUser != current.authUser ||
+            current.authUser == null;
+      },
       listener: (context, state) {
-        print('Splash screen Auth Listener');
+        print('Splash screen listener: $state');
+        Timer(
+          Duration(seconds: 1),
+          () => Navigator.pushNamed(context, '/'),
+        );
       },
       child: Scaffold(
         body: Column(
