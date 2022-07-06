@@ -27,7 +27,7 @@ class Checkout extends Equatable {
 
   Map<String, Object> toDocument() {
     return {
-      'userId': user!.id ?? '',
+      'user': user?.toDocument() ?? User.empty.toDocument(),
       'products': products!.map((product) => product.name).toList(),
       'subtotal': subtotal!,
       'deliveryFee': deliveryFee!,

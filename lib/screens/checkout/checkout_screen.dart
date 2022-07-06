@@ -31,7 +31,6 @@ class CheckoutScreen extends StatelessWidget {
             }
             if (state is CheckoutLoaded) {
               var user = state.user ?? User.empty;
-
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -34,6 +34,13 @@ class CheckoutLoaded extends CheckoutState {
         );
 
   @override
-  List<Object?> get props =>
-      [user, products, subtotal, deliveryFee, total, checkout, paymentMethod];
+  List<Object?> get props => [
+        user,
+        products,
+        subtotal,
+        deliveryFee,
+        total,
+        checkout,
+        paymentMethod,
+      ];
 }
