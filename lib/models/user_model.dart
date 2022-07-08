@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
@@ -40,15 +39,18 @@ class User extends Equatable {
     );
   }
 
-  factory User.fromSnapshot(DocumentSnapshot snap) {
+  factory User.fromJson(
+    Map<String, dynamic> json, [
+    String? id,
+  ]) {
     return User(
-      id: snap.id,
-      fullName: snap['fullName'],
-      email: snap['email'],
-      address: snap['address'],
-      city: snap['city'],
-      country: snap['country'],
-      zipCode: snap['zipCode'],
+      id: id ?? json['id'],
+      fullName: json['fullName'],
+      email: json['email'],
+      address: json['address'],
+      city: json['city'],
+      country: json['country'],
+      zipCode: json['zipCode'],
     );
   }
 
